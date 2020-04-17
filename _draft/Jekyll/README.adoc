@@ -1,0 +1,14 @@
+== ruby, rbenv
+
+gem install jeykyll
+
+rbenv versions
+rbenv install 2.7.1
+
+rbenv local 2.7.1
+
+Gemfile에 내용 설치
+
+bundle install
+
+
