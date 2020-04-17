@@ -11,6 +11,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     # Standard usage
-    - uses:  helaili/jekyll-action@2.0.0
+    - uses:  bokukpark/jekyll-action@3.0.0
       env:
         JEKYLL_PAT: ${{ secrets.JEKYLL_PAT }}
