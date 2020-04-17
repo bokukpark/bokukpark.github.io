@@ -14,3 +14,6 @@ asciidoctor:
     - idseparator=_
     - source-highlighter=coderay
     - icons=font
+gems:
+  - asciidoctor-diagram
+  - jekyll-asciidoc
