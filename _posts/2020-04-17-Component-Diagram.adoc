@@ -1,9 +1,8 @@
 = 컴포넌트 다이어그램(Component Diagram)
-
 :showtitle:
 :page-navtitle: 컴포넌트 다이어그램(Component Diagram)
 :page-excerpt: Excerpt goes here.
-:page-root: ../../
+:page-root: ../../../
 
 == 컴포넌트 다이어그램
 컴포넌트 다이어그램(Component Diagram)은 논리적 또는 물리적인 시스템의 구조를 나타낸 것으로, 컴포넌트, 컴포넌트 인터페이스 그리고 컴포넌트 사이의 관계로 표현된다. 이는 논리뷰(logical view) 혹은 물리뷰(physical view)를 표현하는 데 사용하기도 한다.footnote:component-diagram[UML 분석 설계 실무, 전병선, 2014, 54p]
