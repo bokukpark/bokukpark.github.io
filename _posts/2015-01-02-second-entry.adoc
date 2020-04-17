@@ -1,6 +1,6 @@
 = First Entry
 :showtitle:
-:page-navtitle: First Entry
+:page-navtitle: Second Entry
 :page-excerpt: Excerpt goes here.
 :page-root: ../../../
 
