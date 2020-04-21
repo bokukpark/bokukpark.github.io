@@ -2,28 +2,82 @@
 
 [plantuml, deployment-diagram, svg]
 ....
-actor actor
-agent agent
-artifact artifact
-boundary boundary
-card card
-cloud cloud
-component component
-control control
-database database
-entity entity
-file file
-folder folder
-frame frame
-interface  interface
-node node
-package package
-queue queue
-stack stack
-rectangle rectangle
-storage storage
-usecase usecase
+actor 사용자
 
+' 카카오톡 - 컴포넌트
+node "카카오톡_Web_단말"
+
+사용자 - 카카오톡_Web_단말
+
+node KakaoTalk_Servers {
+  component Hawaii
+  component Wokitoki
+  component Plus_API
+}
+
+카카오톡_Web_단말 -> Hawaii
+Wokitoki -- Plus_API : HTTP
+Hawaii -- Wokitoki : HTTP, Web Socket
+
+' 카카오 챗봇 - 대화 처리 - 컴포넌트
+node Bot_Channel_Engine
+node Chappie
+node Intent_Service {
+    component Pattern_Loader
+    component Intent_Recommender
+    component System_Entity_Extractor
+}
+
+Bot_Channel_Engine -- Chappie
+
+' 카카오 챗봇 - 의도 추천 - 컴포넌트
+
+database ElasticSearch [
+<b>ElasticSearch</b>
+---
+BotId
+IntentId
+RuleId
+RuleType
+Pattern
+Tags
+Entities
+RecommendSentence
+]
+
+database MongoDB [
+<b>MongoDB</b>
+----
+<b>Builder</b>
+Intent
+MatchRule
+IrregularMatchRule
+DeveloperEntity
+----
+<b>Samantha</b>
+QaSets
+]
+
+database Hadoop [
+<b>Hadoop</b>
+----
+ChatLog
+]
+
+' 카카오톡 <-> 카카오 챗봇 관계
+Hawaii - Intent_Recommender
+
+Intent_Recommender - ElasticSearch
+
+System_Entity_Extractor -- MongoDB
+System_Entity_Extractor -- ElasticSearch
+System_Entity_Extractor -- Hadoop
+
+MongoDB -- Pattern_Loader
+Pattern_Loader -- ElasticSearch
+
+' 플러스친구 <-> 카카오 챗봇 관계
+Plus_API -> Bot_Channel_Engine
 
 ....
 
