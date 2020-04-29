@@ -1,15 +1,19 @@
 = MongoDB Dump and Restore
 
+    printjsononeline(cursor.next());
+
+printjson
+
 == 초록(Abstract)
 MongoDB에서 Aggregation Query를 Dump하고 Restore하기
 
 == 방법 1
-. Aggregation 맨 마지막에 out 사용 
+. Aggregation 맨 마지막에 out 사용
 
 .결과를 results collection으로 출력하는 예시
 db.collection.aggregate( [ { aggregation steps... }, { $out : "results" } ] )
 
-. mongoexport로 출력 
+. mongoexport로 출력
 mongoexport -d database -c results -f field1,field2,etc --csv > results.csv
 
 . collection drop
@@ -25,23 +29,23 @@ mongo --nodb --eval < ./abc.js >> ./hello.json
 
 db.getCollection("irregularMatchRule").aggregate(
     [
-        { 
+        {
             "$lookup" : {
-                "from" : "intent", 
-                "localField" : "intentId", 
-                "foreignField" : "_id", 
+                "from" : "intent",
+                "localField" : "intentId",
+                "foreignField" : "_id",
                 "as" : "intent"
             }
-        }, 
-        { 
+        },
+        {
             "$match" : {
                 "intent.0" : {
                     "$exists" : 0
                 }
             }
         }
-    ], 
-    { 
+    ],
+    {
         "allowDiskUse" : false
     }
 )
