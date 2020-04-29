@@ -1,32 +1,86 @@
 = MongoDB Dump and Restore
 
+:sectnums:
+:keywords: MongoDB(몽고디비), Aggregation(어그리게이션), Query(쿼리), Dump(덤프), Restore(복구), Export, Import, Backup(백업)
+
+== 개요(Synopsis)
+
+MongoDB에서 DB, Collection 혹은 단순 Query 결과를 덤프하고 복구하는 것은 mongodump를 이용하면 가능하다.
+그러나 Aggregation 쿼리의 결과를 덤프하는 것은 mongodump로는 불가능하다.
+따라서 본 문서에서는 Aggregation Query의 결과를 덤프하고 복구하는 과정에 대해 설명한다.
+
+Aggregation Query를 통해 결과를 BSON 포맷으로 저장하고, 이를 mongoimport로 복구하는 과정으로 구성된다.
+
+== Aggregation 쿼리의 결과를 덤프하기
+Aggregation Query 결과를 덤프하는 순서는 세 단계로 구분할 수 있다.
+
+. Aggregation 쿼리를 호출하고 그 결과를 출력하는 스크립트 작성 (do-aggregation-and-print.js)
+. Mongo Server와 호환되는 mongo 실행파일 설치
+. do-aggregation-and-print.js 실행
+
+위에서 설명한 단계를 하나씩 알아보자. 본문에서는 mongo를 Docker를 이용해서 실행했다.
+
+=== Aggregation 쿼리 호출 및 결과를 출력하는 스크립트 작성
+아래 코드는
+
+
+
+[source,javascript,linenums]
+.do-aggregation-and-print.js
+[[gettysburg]]
+----
+conn = new Mongo("mongo://your-mongo-uri"); // -- <1>
+db = conn.getDB('your-db'); // -- <2>
+
+db.getCollection("order").aggregate(
+    [
+        {
+          "$match" : {
+              "order_id" : { $in : ["O-123", "O-124"] }
+          }
+        },
+        {
+            "$lookup" : {
+                "from" : "product",
+                "localField" : "product_id",
+                "foreignField" : "_id",
+                "as" : "product"
+            }
+        },
+        {
+            "$project" : {
+                "product": 0
+            }
+        }
+    ],
+    {
+        "allowDiskUse" : true
+    }
+).forEach(function(doc) {
+    printjsononeline(doc); // -- <3>
+});
+----
+<1> MongoDB Server의 URI 입력
+<2> DB 이름 입력
+<3> printjsononeline은 BSON 포맷으로 1줄에 document 1개씩 출력
+
+
+<<gettysburg,chapter titles>>.
+
+===
+[source, bash]
+.filename.java
+----
+$ docker run -it --rm \
+    -v $(pwd):/mongo \
+    mongo:4.2 \
+    bash -c "mongo --nodb --quiet /var/mongo/my-aggregation-and-print-logic.js > /var/mongo/my-data.bson"
+----
+
+== BSON 파일의 Document를 DB로 복구하기
+
     printjsononeline(cursor.next());
 
-printjson
-
-== 초록(Abstract)
-
-MongoDB에서 Aggregation Query를 Dump하고 Restore 해보자.
-
-:keywords: MongoDB, Aggregation, Query, Dump, Restore
-
-== 방법 1
-. Aggregation 맨 마지막에 out 사용
-
-.결과를 results collection으로 출력하는 예시
-db.collection.aggregate( [ { aggregation steps... }, { $out : "results" } ] )
-
-. mongoexport로 출력
-mongoexport -d database -c results -f field1,field2,etc --csv > results.csv
-
-. collection drop
-db.results.drop()
-
-
-https://stackoverflow.com/a/25936760
-
-
-== 방법 2
 mongodb://dev-db-common.devel.kakao.com:27017
 mongo --nodb --eval < ./abc.js >> ./hello.json
 
