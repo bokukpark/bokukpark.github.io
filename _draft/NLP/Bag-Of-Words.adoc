@@ -1,0 +1,9 @@
+= Bag of Words
+
+== Bag of Words
+
+== Word2Vec
+
+== Sent2Vec
+
+== Doc2Vec
