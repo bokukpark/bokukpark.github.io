@@ -1,7 +1,10 @@
 = MongoDB Dump and Restore
 
 == 초록(Abstract)
-MongoDB에서 Aggregation Query를 Dump하고 Restore하기
+
+MongoDB에서 Aggregation Query를 Dump하고 Restore 해보자.
+
+:keywords: MongoDB, Aggregation, Query, Dump, Restore
 
 == 방법 1
 . Aggregation 맨 마지막에 out 사용 
