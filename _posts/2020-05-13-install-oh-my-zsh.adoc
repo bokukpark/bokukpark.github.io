@@ -1,0 +1,7 @@
+= Oh My Zsh 설치
+
+[source,bash]
+----
+curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh | sh
+----
+
